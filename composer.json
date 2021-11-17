@@ -1,0 +1,24 @@
+{
+    "name": "xiong/compressed_file",
+    "description": "PHP handles compressed files and currently supports zip and RAR. It can be used to package into compressed files and decompressed files",
+    "type": "library",
+    "require": {
+        "php": ">=7.2.0",
+        "ext-zip": "*",
+        "ext-rar": "*",
+        "ext-mbstring": "*"
+    },
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Xiong\\CompressedFile\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "晨橙 Smith",
+            "email": "920772304@qq.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
