@@ -13,6 +13,8 @@ class CompressionInit
     protected $decompression_path = "";
     // 设置压缩文件名
     protected $file_name = "";
+    // 压缩包路径
+    protected $compressed_packet_path = "";
 
     /**
      * 设置压缩文件名
@@ -63,6 +65,29 @@ class CompressionInit
     protected function isDecompressionPath(){
         if($this->decompression_path == ""){
             throw new Exception("保存压缩文件目录不存在",401);
+        }
+    }
+    /**
+     * 设置压缩包路径
+     * 
+     * @throws Exception
+     */
+    public function setCompressedPacketPath($path){
+        if(file_exists($path)){
+            $compressed_packet_path = str_replace("\\","/",$path);
+            $this->compressed_packet_path = $compressed_packet_path;
+        }else{
+            throw new Exception("文件不存在 ".$path,401);
+        }
+    }
+    /**
+     * 判断压缩文件是否存在
+     * 
+     * @throws Exception
+     */
+    protected function isCompressedPacketPath(){
+        if($this->compressed_packet_path == ""){
+            throw new Exception("压缩文件不存在".$path,401);
         }
     }
 }

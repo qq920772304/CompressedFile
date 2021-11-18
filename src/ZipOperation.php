@@ -29,6 +29,38 @@ class ZipOperation extends CompressionInit
     }
 
     /**
+     * 解压zip文件
+     *
+     * @return array 解压后的文件路径
+     * @throws Exception
+     */
+    public function ZipDecompression(){
+        $this->isExtZip();
+        return $this->decompression();
+    }
+
+    /**
+     * 把zip解压，并返回对应的路径
+     *
+     * @return array
+     */
+    private function decompression(){
+        // 判断压缩文件是否存在
+        $compressed_packet_path = $this->compressed_packet_path;
+        $this->isCompressedPacketPath($compressed_packet_path);
+        $this->isDecompressionPath($this->decompression_path);
+        $data = array();
+        $res = $this->ext_zip->open($compressed_packet_path);
+        if($res === true){
+            $this->ext_zip->extractTo($this->decompression_path);
+            $this->ext_zip->close();
+        }else{
+            throw new Exception("无法打开压缩包".$path,401);
+        }
+        return $data;
+    }
+
+    /**
      * 把文件设置为压缩文件
      *
      * @return string
