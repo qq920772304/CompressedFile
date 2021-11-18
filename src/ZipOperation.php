@@ -18,7 +18,7 @@ class ZipOperation extends CompressionInit
     }
 
     /**
-     * 把文件压缩成zip
+     * 把文件压缩成zip，并返回路径
      *
      * @return string 压缩包路径
      * @throws Exception

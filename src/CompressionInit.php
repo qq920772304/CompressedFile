@@ -26,7 +26,8 @@ class CompressionInit
         }
     }
     /**
-     * 设置文集路径
+     * 需要压缩的文件
+     *
      * @param $path string 文件路径
      * @throws Exception
      */
@@ -42,11 +43,12 @@ class CompressionInit
     }
 
     /**
-     * 判断目录是否存在，如果不存在新建目录
+     * 设置压缩后存储位置
+     *
      * @param $path
      */
     public function setDecompressionPath($path){
-        // 判断路径是否存在
+        // 判断目录是否存在，如果不存在新建目录
         if(!is_dir($path)){
             $path = str_replace("\\","/",$path);
             mkdir($path,0777,true);
