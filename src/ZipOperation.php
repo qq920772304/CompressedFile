@@ -47,15 +47,23 @@ class ZipOperation extends CompressionInit
     private function decompression(){
         // 判断压缩文件是否存在
         $compressed_packet_path = $this->compressed_packet_path;
+        $decompression_path = $this->decompression_path;
         $this->isCompressedPacketPath($compressed_packet_path);
-        $this->isDecompressionPath($this->decompression_path);
-        $data = array();
+        $this->isDecompressionPath($decompression_path);
+        $files_one = $this->getAllFiles($decompression_path);
         $res = $this->ext_zip->open($compressed_packet_path);
         if($res === true){
-            $this->ext_zip->extractTo($this->decompression_path);
+            $this->ext_zip->extractTo($decompression_path);
             $this->ext_zip->close();
         }else{
-            throw new Exception("无法打开压缩包".$path,401);
+            throw new Exception("无法打开压缩包".$compressed_packet_path,401);
+        }
+        $files_two = $this->getAllFiles($decompression_path);
+        $data = array();
+        foreach ($files_two as $index=>$item){
+            if(!in_array($item,$files_one)){
+                $data[] = $item;
+            }
         }
         return $data;
     }

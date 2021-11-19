@@ -9,7 +9,7 @@ class CompressionInit
 {
     // 文件集合
     protected $file_set = array();
-    // 解压路径
+    // 存储路径
     protected $decompression_path = "";
     // 设置压缩文件名
     protected $file_name = "";
@@ -59,17 +59,19 @@ class CompressionInit
     }
 
     /**
-     * 判断压缩文件目录是否存在
+     * 判断文件目录是否存在
      * @throws Exception
      */
     protected function isDecompressionPath(){
         if($this->decompression_path == ""){
-            throw new Exception("保存压缩文件目录不存在",401);
+            throw new Exception("保存文件目录不存在",401);
         }
     }
+
     /**
      * 设置压缩包路径
-     * 
+     *
+     * @param $path
      * @throws Exception
      */
     public function setCompressedPacketPath($path){
@@ -82,12 +84,41 @@ class CompressionInit
     }
     /**
      * 判断压缩文件是否存在
-     * 
+     *
      * @throws Exception
      */
     protected function isCompressedPacketPath(){
         if($this->compressed_packet_path == ""){
-            throw new Exception("压缩文件不存在".$path,401);
+            throw new Exception("压缩文件不存在".$this->compressed_packet_path,401);
         }
+    }
+
+    /**
+     * 扫描目录中存在的文件
+     *
+     * @param $path string 扫描的路径
+     * @return array 所有文件路径
+     */
+    protected function getAllFiles(string $path){
+        $path = str_replace("\\","/",$path);
+        $str = mb_substr($path,-1,1);
+        if($str != "/"){
+            $path = $path."/";
+        }
+        $files = scandir($path);
+        $data = array();
+        foreach ($files as $key=>$value){
+            if($value == "." || $value == ".."){
+                continue;
+            }else if(is_file($path.$value)){
+                $data[] = $path.$value;
+            }else{
+                $list = $this->getAllFiles($path.$value);
+                foreach ($list as $index=>$item){
+                    $data[] = $item;
+                }
+            }
+        }
+        return $data;
     }
 }
