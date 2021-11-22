@@ -56,7 +56,6 @@ class ZipOperation extends CompressionInit
         $this->isDecompressionPath();
         $this->ext_zip->setPassword($this->password);
         $res = $this->ext_zip->open($compressed_packet_path);
-
         if($res === true){
             $this->ext_zip->extractTo($temp_path);
             $this->ext_zip->close();
@@ -87,7 +86,10 @@ class ZipOperation extends CompressionInit
         }
         $filename = $filename.$this->file_name.".zip";
         $this->ext_zip->setPassword($this->password);
-        $this->ext_zip->open($filename,ZipArchive::CREATE);
+        $zip_open = $this->ext_zip->open($filename,ZipArchive::CREATE);
+        if($zip_open === false){
+            throw new Exception("无法打开压缩包",401);
+        }
         $file_set = $this->file_set;
         if(count($file_set) == 0){
             throw new Exception("没有设置文件，无法进行压缩zip",401);
