@@ -46,4 +46,15 @@ function demo2(){
     $data = $zip->ZipDecompression();
     return $data;
 }
+/**
+ * 案例3 解压rar
+ * @throws Exception
+ */
+function demo3(){
+    $rar = new RarOperation();
+    $rar->setCompressedPacketPath("/wwwroot/CompressedFile/public/工作汇报.rar");
+    $rar->setDecompressionPath(__DIR__.DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR."工作汇报");
+    $data = $rar->decompression();
+    return $data;
+}
 ~~~
