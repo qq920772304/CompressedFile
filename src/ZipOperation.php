@@ -54,7 +54,9 @@ class ZipOperation extends CompressionInit
         }
         $this->isCompressedPacketPath();
         $this->isDecompressionPath();
+        $this->ext_zip->setPassword($this->password);
         $res = $this->ext_zip->open($compressed_packet_path);
+
         if($res === true){
             $this->ext_zip->extractTo($temp_path);
             $this->ext_zip->close();
@@ -84,6 +86,7 @@ class ZipOperation extends CompressionInit
             $this->setFileName();
         }
         $filename = $filename.$this->file_name.".zip";
+        $this->ext_zip->setPassword($this->password);
         $this->ext_zip->open($filename,ZipArchive::CREATE);
         $file_set = $this->file_set;
         if(count($file_set) == 0){
