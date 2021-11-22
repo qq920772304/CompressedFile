@@ -1,5 +1,7 @@
 # CompressedFile
-PHP处理压缩文件（目前不支持文件包含密码）
+PHP 压缩文件成ZIP
+
+PHP 解压ZIP与RAR
 
 ------
 
