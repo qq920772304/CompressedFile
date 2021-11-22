@@ -15,7 +15,17 @@ class CompressionInit
     protected $file_name = "";
     // 压缩包路径
     protected $compressed_packet_path = "";
+    // 压缩包密码
+    protected $password = "";
 
+    /**
+     * 设置压缩包密码
+     *
+     * @param $password string 压缩包密码
+     */
+    public function setPwd($password = ""){
+        $this->password = $password;
+    }
     /**
      * 设置压缩文件名
      * @param $fileName string 文件名
