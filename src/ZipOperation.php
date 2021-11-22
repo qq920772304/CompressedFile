@@ -48,24 +48,26 @@ class ZipOperation extends CompressionInit
         // 判断压缩文件是否存在
         $compressed_packet_path = $this->compressed_packet_path;
         $decompression_path = $this->decompression_path;
-        $this->isCompressedPacketPath($compressed_packet_path);
-        $this->isDecompressionPath($decompression_path);
-        $files_one = $this->getAllFiles($decompression_path);
+        $temp_path = sys_get_temp_dir().DIRECTORY_SEPARATOR."compress".rand(10,999)."_".time();
+        if(is_dir($temp_path)){
+            mkdir($temp_path,0777,true);
+        }
+        $this->isCompressedPacketPath();
+        $this->isDecompressionPath();
         $res = $this->ext_zip->open($compressed_packet_path);
         if($res === true){
-            $this->ext_zip->extractTo($decompression_path);
+            $this->ext_zip->extractTo($temp_path);
             $this->ext_zip->close();
+            // 把临时目录的所有文件拷贝到指定目录
+            $files = $this->getAllFiles($temp_path);
+            $data = $this->moveFileToSpecifyDirectory($files,$decompression_path,$temp_path);
+            // 删除所有临时文件和目录
+            $this->delDirAndFile($temp_path);
+            return $data;
         }else{
             throw new Exception("无法打开压缩包".$compressed_packet_path,401);
         }
-        $files_two = $this->getAllFiles($decompression_path);
-        $data = array();
-        foreach ($files_two as $index=>$item){
-            if(!in_array($item,$files_one)){
-                $data[] = $item;
-            }
-        }
-        return $data;
+
     }
 
     /**
@@ -77,16 +79,11 @@ class ZipOperation extends CompressionInit
     private function zipAssemble(){
         $this->isDecompressionPath();
         $filename = $this->decompression_path;
-        $str = mb_substr($filename,-1,1);
         $file_name = $this->file_name;
         if($file_name == ""){
             $this->setFileName();
         }
-        if($str == "/"){
-            $filename = $filename.$this->file_name.".zip";
-        }else{
-            $filename = $filename."/".$this->file_name.".zip";
-        }
+        $filename = $filename.$this->file_name.".zip";
         $this->ext_zip->open($filename,ZipArchive::CREATE);
         $file_set = $this->file_set;
         if(count($file_set) == 0){
