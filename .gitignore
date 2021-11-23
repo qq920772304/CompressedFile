@@ -1,3 +1,4 @@
-/.user.ini
-/index.php
-/.idea
+.user.ini
+index.php
+.idea
+sftp-config.json
